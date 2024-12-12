@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Box, TableCell } from "@mui/material";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
-import { useTableData } from "../context/TableData.tsx";
-import { usePagination } from "../context/PaginationContext.tsx";
-import { useAppSelector } from "../store/hooks.ts";
+import React, { useEffect, useState } from 'react';
+import { Box, TableCell } from '@mui/material';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
+import { useTableData } from '../context/TableData';
+import { usePagination } from '../context/PaginationContext';
+import { useAppSelector } from '../store/hooks';
 
-const sortTypes = ["default", "ascending", "descending"];
+const sortTypes = ['default', 'ascending', 'descending'];
 
 interface THeadingProps {
   index: number;
@@ -35,13 +35,13 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
 
     const sortedData = [...filteredData];
 
-    if (sortType === "default") {
+    if (sortType === 'default') {
       setFilteredData(filteredDataCopy);
       return;
-    } else if (sortType === "ascending") {
+    } else if (sortType === 'ascending') {
       const updatedArray = sortInAscendingOrder(sortedData);
       setFilteredData(updatedArray);
-    } else if (sortType === "descending") {
+    } else if (sortType === 'descending') {
       const updatedArray = sortInDescendingOrder(sortedData);
       setFilteredData(updatedArray);
     }
@@ -49,7 +49,7 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
 
   function sortInAscendingOrder(dataArray: object[]) {
     dataArray.sort((a, b) => {
-      if (typeof a[columnKey] === "string") {
+      if (typeof a[columnKey] === 'string') {
         if (!isNaN(Number(a[columnKey]))) {
           // convert the string into Number
           return Number(a[columnKey]) - Number(b[columnKey]);
@@ -57,7 +57,7 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
           return a[columnKey].localeCompare(b[columnKey]);
         }
       }
-      if (typeof a[columnKey] === "number") {
+      if (typeof a[columnKey] === 'number') {
         return a[columnKey] - b[columnKey];
       }
       return 0;
@@ -68,7 +68,7 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
 
   function sortInDescendingOrder(dataArray: object[]) {
     dataArray.sort((a, b) => {
-      if (typeof a[columnKey] === "string") {
+      if (typeof a[columnKey] === 'string') {
         if (!isNaN(Number(a[columnKey]))) {
           // convert the string into Number
           return Number(b[columnKey]) - Number(a[columnKey]);
@@ -76,7 +76,7 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
           return b[columnKey].localeCompare(a[columnKey]);
         }
       }
-      if (typeof a[columnKey] === "number") {
+      if (typeof a[columnKey] === 'number') {
         return b[columnKey] - a[columnKey];
       }
       return 0;
@@ -89,10 +89,10 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
     <TableCell key={index}>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          cursor: "pointer",
-          color: "grey",
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+          color: 'grey',
         }}
         data-sort={sort}
         onClick={handleSortColumn}

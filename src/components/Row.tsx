@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import Column from "./Column.tsx";
-import { Checkbox } from "@mui/material";
-import { useRowContext } from "../context/RowContext.tsx";
-import { makeStyles } from "@mui/styles";
+import React, { useEffect, useState } from 'react';
+import Column from './Column';
+import { Checkbox } from '@mui/material';
+import { useRowContext } from '../context/RowContext';
+import { makeStyles } from '@mui/styles';
 
 const useRowStyles = makeStyles({
   tableRow: {
-    "&:hover": {
-      backgroundColor: "whitesmoke",
-      cursor: "pointer",
-      transition: "0.3s",
+    '&:hover': {
+      backgroundColor: 'whitesmoke',
+      cursor: 'pointer',
+      transition: '0.3s',
     },
   },
   activeRow: {
-    background: "whitesmoke",
+    background: 'whitesmoke',
   },
 });
 
@@ -56,7 +56,7 @@ function Row({ data }: RowProps) {
           value={value}
           key={index}
           tableClass={
-            rowsToBeDeleted.includes(data.unique_key) ? classes.activeRow : ""
+            rowsToBeDeleted.includes(data.unique_key) ? classes.activeRow : ''
           }
         />
       ))}

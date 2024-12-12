@@ -1,5 +1,5 @@
-import { TableCell } from "@mui/material";
-import React from "react";
+import React from 'react';
+import { TableCell } from '@mui/material';
 
 interface ColumnProps {
   value: string;

@@ -1,7 +1,7 @@
-import { Checkbox, TableRow } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import THeading from "./THeading.tsx";
-import { useRowContext } from "../context/RowContext.tsx";
+import { Checkbox, TableRow } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useRowContext } from '../context/RowContext';
+import THeading from './THeading';
 
 interface TableHeadingProps {
   headings: object;

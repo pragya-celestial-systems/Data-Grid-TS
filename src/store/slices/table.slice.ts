@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+// TODO : Remove the use of 'any'
 interface TableRow {
   [key: string]: any;
 }
@@ -17,7 +18,7 @@ const initialState: TableState = {
 };
 
 const tableSlice = createSlice({
-  name: "table-slice",
+  name: 'table-slice',
   initialState,
   reducers: {
     setTableData: (state, action: PayloadAction<TableRow[]>) => {

@@ -1,8 +1,8 @@
-import * as React from "react";
-import TablePagination from "@mui/material/TablePagination";
-import { usePagination } from "../context/PaginationContext.tsx";
-import { useTableData } from "../context/TableData.tsx";
-import { useAppSelector } from "../store/hooks.ts";
+import * as React from 'react';
+import TablePagination from '@mui/material/TablePagination';
+import { usePagination } from '../context/PaginationContext';
+import { useTableData } from '../context/TableData';
+import { useAppSelector } from '../store/hooks';
 
 export default function TablePaginationDemo() {
   const { currentPage, setCurrentPage, rows, setRows, isFiltering } =

@@ -1,11 +1,18 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useAppSelector } from "../store/hooks.ts";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { useAppSelector } from '../store/hooks';
 
 interface TableData {
   filteredData: object[];
-  setFilteredData: (data: object[]) => void;
+  setFilteredData: Dispatch<SetStateAction<object[]>>;
   tableData: object[];
-  setTableData: (data: object[]) => void;
+  setTableData: Dispatch<SetStateAction<object[]>>;
 }
 
 interface TableProviderInterface {
@@ -24,11 +31,13 @@ export function TableDataProvider({ children }: TableProviderInterface) {
   }, [data]);
 
   return (
-    <dataContext.Provider
-      value={{ filteredData, setFilteredData, tableData, setTableData }}
-    >
-      {children}
-    </dataContext.Provider>
+    <>
+      <dataContext.Provider
+        value={{ filteredData, setFilteredData, tableData, setTableData }}
+      >
+        {children}
+      </dataContext.Provider>
+    </>
   );
 }
 
@@ -37,7 +46,7 @@ export function useTableData() {
 
   if (!tableContext) {
     throw new Error(
-      "useTableContext must be used only inside the TableDataProvider."
+      'useTableContext must be used only inside the TableDataProvider.', 
     );
   }
 

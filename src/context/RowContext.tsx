@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from 'react';
 
 interface TableContextProviderProps {
   children: React.ReactNode;
@@ -35,7 +35,7 @@ export function useRowContext() {
   const context = useContext(rowContext);
 
   if (!context) {
-    throw new Error("usePagination must be used within a PaginationProvider");
+    throw new Error('usePagination must be used within a PaginationProvider');
   }
 
   return context;

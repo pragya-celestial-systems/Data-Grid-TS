@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from 'react';
 
 interface Pagination {
   currentPage: number;
@@ -40,7 +40,7 @@ export function usePagination() {
   const pagination = useContext(paginationContext);
 
   if (!pagination) {
-    throw new Error("usePagination must be used within a PaginationProvider");
+    throw new Error('usePagination must be used within a PaginationProvider');
   }
 
   return pagination;
