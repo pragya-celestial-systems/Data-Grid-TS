@@ -10,7 +10,7 @@ export default function TablePaginationDemo() {
   const data = useAppSelector((state) => state.tableData.data);
   const { tableData } = useTableData();
 
-  const handleChangePage = (event: React.SyntheticEvent, newPage: number) => {
+  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setCurrentPage(newPage);
   };
 

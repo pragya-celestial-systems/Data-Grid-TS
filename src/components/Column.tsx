@@ -2,7 +2,7 @@ import React from 'react';
 import { TableCell } from '@mui/material';
 
 interface ColumnProps {
-  value: string;
+  value: string | number;
   tableClass: string;
 }
 

@@ -18,12 +18,14 @@ const useRowStyles = makeStyles({
 });
 
 interface RowProps {
-  data: object;
+  data : {
+    [key: string]: string | number;
+  }
 }
 
 function Row({ data }: RowProps) {
   const classes = useRowStyles();
-  const [rowData, setRowData] = useState<string[]>([]);
+  const [rowData, setRowData] = useState<(string | number)[]>([]);
   const { rowsToBeDeleted, setRowsToBeDeleted } = useRowContext();
 
   useEffect(() => {
@@ -35,11 +37,11 @@ function Row({ data }: RowProps) {
     }
   }, [data]);
 
-  function handleCheck(key: string) {
-    if (rowsToBeDeleted.includes(key)) {
-      setRowsToBeDeleted(rowsToBeDeleted.filter((item) => item !== key));
+  function handleCheck(key: string | number) {
+    if (rowsToBeDeleted.includes(String(key))) {
+      setRowsToBeDeleted(rowsToBeDeleted.filter((item : string): boolean => item !== key));
     } else {
-      setRowsToBeDeleted([...rowsToBeDeleted, key]);
+      setRowsToBeDeleted([...rowsToBeDeleted, String(key)]);
     }
   }
 
@@ -48,15 +50,15 @@ function Row({ data }: RowProps) {
       <td>
         <Checkbox
           onChange={() => handleCheck(data.unique_key)}
-          checked={rowsToBeDeleted.includes(data.unique_key)}
+          checked={rowsToBeDeleted.includes(String(data.unique_key))}
         />
       </td>
-      {rowData.map((value, index) => (
+      {rowData.map((value: string | number, index: number) => (
         <Column
           value={value}
           key={index}
           tableClass={
-            rowsToBeDeleted.includes(data.unique_key) ? classes.activeRow : ''
+            rowsToBeDeleted.includes(String(data.unique_key)) ? classes.activeRow : ''
           }
         />
       ))}

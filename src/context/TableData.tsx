@@ -8,6 +8,11 @@ import React, {
 } from 'react';
 import { useAppSelector } from '../store/hooks';
 
+export type filteredType = {
+  [key: string]: string | number,
+}
+
+
 interface TableData {
   filteredData: object[];
   setFilteredData: Dispatch<SetStateAction<object[]>>;

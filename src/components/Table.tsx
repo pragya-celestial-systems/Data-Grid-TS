@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import TableHeadings from './TableHeadings';
 import Row from './Row';
-import { useTableData } from '../context/TableData';
+import { filteredType, useTableData } from '../context/TableData';
 import { usePagination } from '../context/PaginationContext';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,6 +14,11 @@ import { deleteRow, setTableData } from '../store/slices/table.slice';
 import { useAppDispatch } from '../store/hooks';
 import jsonData from '../data.json';
 
+// type  DataType = {
+//   // unique_key?: string;
+//   [key: string]: number | string;
+// }
+
 export default function BasicTable() {
   const dispatch = useAppDispatch();
   const { tableData } = useTableData();
@@ -25,7 +30,6 @@ export default function BasicTable() {
     areAllSelected,
     setAreAllSelected,
   } = useRowContext();
-  const tableRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     dispatch(setTableData(jsonData));
@@ -33,7 +37,7 @@ export default function BasicTable() {
 
   useEffect(() => {
     if (areAllSelected) {
-      const uniqueKeys = filteredData.map((data) => {
+      const uniqueKeys = filteredData.map((data: filteredType): number | string => {
         return data.unique_key;
       });
 
@@ -51,7 +55,7 @@ export default function BasicTable() {
 
   function handleDeleteRow() {
     const confirm = window.confirm(
-      'Are you sure you want to delete the selected rows?'
+      'Are you sure you want to delete the selected rows?',
     );
 
     if (!confirm) return;
@@ -71,8 +75,8 @@ export default function BasicTable() {
           <TableHead>
             <TableHeadings headings={filteredData[0]} />
           </TableHead>
-          <TableBody ref={tableRef}>
-            {filteredData.map((row, index) => (
+          <TableBody>
+            {filteredData.map((row: object, index: number) => (
               <Row key={index} data={row} />
             ))}
           </TableBody>

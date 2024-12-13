@@ -10,7 +10,12 @@ const sortTypes = ['default', 'ascending', 'descending'];
 interface THeadingProps {
   index: number;
   heading: string;
-  columnKey: string | number;
+  columnKey: string | number ;
+}
+
+interface sortInterface {
+  a? : {columnKey: string | number};
+  b? : {columnKey: string | number};
 }
 
 function THeading({ index, heading, columnKey }: THeadingProps) {
@@ -48,7 +53,7 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
   }
 
   function sortInAscendingOrder(dataArray: object[]) {
-    dataArray.sort((a, b) => {
+    dataArray.sort((a: sortInterface, b: sortInterface) => {
       if (typeof a[columnKey] === 'string') {
         if (!isNaN(Number(a[columnKey]))) {
           // convert the string into Number

@@ -26,7 +26,7 @@ export default [
       'react/function-component-definition': ['error'],
       'react/jsx-pascal-case': 'error',
       'react/jsx-key': 'error',
-      'react/prop-types': ['warn', { skipUndeclared: true }],
+      // 'react/prop-types': ['warn', { skipUndeclared: true }],
     },
   },
 ];
