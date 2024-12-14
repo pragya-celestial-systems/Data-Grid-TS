@@ -5,8 +5,8 @@ interface TableContextProviderProps {
 }
 
 interface TableContextProps {
-  rowsToBeDeleted: string[];
-  setRowsToBeDeleted: (rows: string[]) => void;
+  rowsToBeDeleted: (string | number)[];
+  setRowsToBeDeleted: (rows: (string | number)[]) => void;
   areAllSelected: boolean;
   setAreAllSelected: (isSelected: boolean) => void;
 }
@@ -14,7 +14,7 @@ interface TableContextProps {
 const rowContext = createContext<TableContextProps | undefined>(undefined);
 
 export function RowProvider({ children }: TableContextProviderProps) {
-  const [rowsToBeDeleted, setRowsToBeDeleted] = useState<string[]>([]);
+  const [rowsToBeDeleted, setRowsToBeDeleted] = useState<(string|number)[]>([]);
   const [areAllSelected, setAreAllSelected] = useState<boolean>(false);
 
   return (

@@ -19,7 +19,7 @@ const useRowStyles = makeStyles({
 
 interface RowProps {
   data : {
-    [key: string]: string | number;
+    [key: string]: string | number ;
   }
 }
 
@@ -39,7 +39,7 @@ function Row({ data }: RowProps) {
 
   function handleCheck(key: string | number) {
     if (rowsToBeDeleted.includes(String(key))) {
-      setRowsToBeDeleted(rowsToBeDeleted.filter((item : string): boolean => item !== key));
+      setRowsToBeDeleted(rowsToBeDeleted.filter((item : string | number): boolean => item !== key));
     } else {
       setRowsToBeDeleted([...rowsToBeDeleted, String(key)]);
     }

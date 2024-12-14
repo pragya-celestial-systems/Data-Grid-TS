@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// TODO : Remove the use of 'any'
 interface TableRow {
-  [key: string]: string | number;
+  unique_key?: string | number;
+  [key: string]: string | number | undefined;
 }
 
 interface TableState {
@@ -10,13 +10,7 @@ interface TableState {
 }
 
 interface DeleteRowInterface {
-  rows: string[];
-}
-
-interface Row {
-  row: {
-    unique_key: string
-  }
+  rows: (string | number)[];
 }
 
 const initialState: TableState = {
@@ -30,9 +24,12 @@ const tableSlice = createSlice({
     setTableData: (state, action: PayloadAction<TableRow[]>) => {
       state.data = action.payload;
     },
+
     deleteRow: (state, action: PayloadAction<DeleteRowInterface>) => {
       const { rows } = action.payload;
-      state.data = state.data.filter((row: Row) => !rows.includes(row.unique_key));
+      state.data = state.data.filter(
+        (row) => row.unique_key === undefined || !rows.includes(row.unique_key),
+      );
     },
   },
 });

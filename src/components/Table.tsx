@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import TableHeadings from './TableHeadings';
 import Row from './Row';
-import { filteredType, useTableData } from '../context/TableData';
+import { useTableData } from '../context/TableData';
 import { usePagination } from '../context/PaginationContext';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,15 +14,18 @@ import { deleteRow, setTableData } from '../store/slices/table.slice';
 import { useAppDispatch } from '../store/hooks';
 import jsonData from '../data.json';
 
-// type  DataType = {
-//   // unique_key?: string;
-//   [key: string]: number | string;
-// }
+interface TableData {
+  unique_key: string | number;
+  [key: string]: string | number;
+}
 
 export default function BasicTable() {
   const dispatch = useAppDispatch();
-  const { tableData } = useTableData();
-  const { filteredData, setFilteredData } = useTableData();
+  const { tableData, filteredData, setFilteredData } = useTableData() as {
+    tableData: TableData[];
+    filteredData: TableData[];
+    setFilteredData: (data: TableData[]) => void;
+  };
   const { currentPage, rows } = usePagination();
   const {
     rowsToBeDeleted,
@@ -33,17 +36,17 @@ export default function BasicTable() {
 
   useEffect(() => {
     dispatch(setTableData(jsonData));
-  }, [jsonData]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (areAllSelected) {
-      const uniqueKeys = filteredData.map((data: filteredType): number | string => {
-        return data.unique_key;
-      });
+      const uniqueKeys = filteredData.map(
+        (data: TableData): string | number => data.unique_key,
+      );
 
       setRowsToBeDeleted(uniqueKeys);
     }
-  }, [areAllSelected]);
+  }, [areAllSelected, filteredData, setRowsToBeDeleted]);
 
   useEffect(() => {
     if (tableData) {
@@ -51,7 +54,7 @@ export default function BasicTable() {
       const endIndex = startIndex + rows;
       setFilteredData(tableData.slice(startIndex, endIndex));
     }
-  }, [currentPage, rows, tableData]);
+  }, [currentPage, rows, tableData, setFilteredData]);
 
   function handleDeleteRow() {
     const confirm = window.confirm(
@@ -76,7 +79,7 @@ export default function BasicTable() {
             <TableHeadings headings={filteredData[0]} />
           </TableHead>
           <TableBody>
-            {filteredData.map((row: object, index: number) => (
+            {filteredData.map((row, index) => (
               <Row key={index} data={row} />
             ))}
           </TableBody>
