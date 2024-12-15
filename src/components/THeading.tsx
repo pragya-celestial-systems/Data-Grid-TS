@@ -10,12 +10,11 @@ const sortTypes = ['default', 'ascending', 'descending'];
 interface THeadingProps {
   index: number;
   heading: string;
-  columnKey: string | number ;
+  columnKey: string | number;
 }
 
-interface sortInterface {
-  a? : {columnKey: string | number};
-  b? : {columnKey: string | number};
+interface SortDataParams {
+  [key: string]: string | number | undefined ;
 }
 
 function THeading({ index, heading, columnKey }: THeadingProps) {
@@ -23,7 +22,7 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
   const tableData = useAppSelector((state) => state.tableData.data);
   const { currentPage, rows } = usePagination();
   const { filteredData, setFilteredData } = useTableData();
-  const [filteredDataCopy, setFilteredDataCopy] = useState<object[]>([]);
+  const [filteredDataCopy, setFilteredDataCopy] = useState<SortDataParams[]>([]);
 
   useEffect(() => {
     if (tableData) {
@@ -38,7 +37,8 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
     const sortKey = Number(e.currentTarget.dataset.sort);
     const sortType = sortTypes[sortKey];
 
-    const sortedData = [...filteredData];
+    // TODO
+    const sortedData = [...filteredData] as SortDataParams[];
 
     if (sortType === 'default') {
       setFilteredData(filteredDataCopy);
@@ -52,17 +52,17 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
     }
   }
 
-  function sortInAscendingOrder(dataArray: object[]) {
-    dataArray.sort((a: sortInterface, b: sortInterface) => {
-      if (typeof a[columnKey] === 'string') {
-        if (!isNaN(Number(a[columnKey]))) {
-          // convert the string into Number
+  function sortInAscendingOrder(dataArray: SortDataParams[]) {
+    console.log(typeof dataArray);
+    dataArray.sort((a, b) => {
+      if (typeof a[columnKey] === 'string' && typeof b[columnKey] === 'string') {
+        if (!isNaN(Number(a[columnKey])) && !isNaN(Number(b[columnKey]))) {
           return Number(a[columnKey]) - Number(b[columnKey]);
         } else {
           return a[columnKey].localeCompare(b[columnKey]);
         }
       }
-      if (typeof a[columnKey] === 'number') {
+      if (typeof a[columnKey] === 'number' && typeof b[columnKey] === 'number') {
         return a[columnKey] - b[columnKey];
       }
       return 0;
@@ -71,17 +71,16 @@ function THeading({ index, heading, columnKey }: THeadingProps) {
     return dataArray;
   }
 
-  function sortInDescendingOrder(dataArray: object[]) {
+  function sortInDescendingOrder(dataArray: SortDataParams[]) {
     dataArray.sort((a, b) => {
-      if (typeof a[columnKey] === 'string') {
-        if (!isNaN(Number(a[columnKey]))) {
-          // convert the string into Number
+      if (typeof a[columnKey] === 'string' && typeof b[columnKey] === 'string') {
+        if (!isNaN(Number(a[columnKey])) && !isNaN(Number(b[columnKey]))) {
           return Number(b[columnKey]) - Number(a[columnKey]);
         } else {
           return b[columnKey].localeCompare(a[columnKey]);
         }
       }
-      if (typeof a[columnKey] === 'number') {
+      if (typeof a[columnKey] === 'number' && typeof b[columnKey] === 'number') {
         return b[columnKey] - a[columnKey];
       }
       return 0;
