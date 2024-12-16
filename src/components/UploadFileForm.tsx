@@ -1,11 +1,13 @@
+import React, { useCallback, useState } from 'react';
 import { Button } from '@mui/material';
+import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import React, { SetStateAction, useCallback, useState } from 'react';
+import { makeStyles } from '@mui/styles';
+import { useAppDispatch } from '../store/hooks';
 import { setTableData } from '../store/slices/table.slice';
 import { v4 as uuidv4 } from 'uuid';
-import { makeStyles } from '@mui/styles';
-import { useDropzone } from 'react-dropzone';
-import { useAppDispatch } from '../store/hooks';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const useFromStyles = makeStyles({
   container: {
@@ -26,12 +28,6 @@ const useFromStyles = makeStyles({
     height: '300px',
     width: '300px',
   },
-  input: {
-    outline: 'none',
-  },
-  button: {
-    marginTop: '1rem !important',
-  },
   fileInput: {
     padding: '0.5rem',
     border: '1px solid lightgrey',
@@ -42,68 +38,54 @@ const useFromStyles = makeStyles({
     fontWeight: 700,
     color: 'green',
   },
+  button: {
+    marginTop: '1rem !important',
+  },
+  dropzone: {},
 });
 
 function UploadFileForm() {
-//   const onDrop = useCallback((acceptedFiles : SetStateAction<FileInterface>) => {
-  const onDrop = useCallback((acceptedFiles : object[]) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [data, setData] = useState<object[]>([]);
+  const dispatch = useAppDispatch();
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       setFile(acceptedFiles[0]);
     }
   }, []);
-  const [file, setFile] = useState<object | null>(null);
-  const [data, setData] = useState<object[]>([]);
-  const dispatch = useAppDispatch();
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { 'application/json': ['.json'], 'text/csv': ['.csv'] },
     multiple: false,
   });
+
   const classes = useFromStyles();
 
-  async function fetchJsonData() {
+  async function fetchFileData(endPoint: string) {
     if (!file) return;
+
+    const splittedArray = endPoint.split('/');
+
     const formData = new FormData();
-    formData.append('jsonFile', file);
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/parser/json`,
-      formData,
-    );
 
-    const dataStr = JSON.stringify(response.data);
-    setData(JSON.parse(dataStr));
-  }
+    if (splittedArray[5] === 'json') {
+      formData.append('jsonFile', file);
+    } else {
+      formData.append('csvFile', file);
+    }
 
-  async function fetchCsvData() {
-    const formData = new FormData();
-    formData.append('csvFile', file);
+    const response = await axios.post(endPoint, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
 
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/parser/csv`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
-    );
-
-    const dataArray = response.data;
-    setData(dataArray);
-  }
-
-  function addUniqueKey() {
-    const updatedData = data.map((item: object) => ({
-      ...item,
-      unique_key: uuidv4(),
-    }));
-
-    return updatedData;
+    setData(response.data);
   }
 
   async function handleFileUpload() {
     if (!file) {
-      alert('Please select the file first.');
+      alert('Please select a file first.');
       return;
     }
 
@@ -115,48 +97,54 @@ function UploadFileForm() {
 
     try {
       if (file.type === 'application/json') {
-        fetchJsonData();
+        await fetchFileData(`${process.env.REACT_APP_API_URL}/api/parser/json`);
+      } else if (file.type === 'text/csv') {
+        await fetchFileData(`${process.env.REACT_APP_API_URL}/api/parser/csv`);
       }
 
-      if (file.type === 'text/csv') {
-        fetchCsvData();
-      }
-
-      const updatedData = addUniqueKey();
+      const updatedData = data.map((item) => ({
+        ...item,
+        unique_key: uuidv4(),
+      }));
       dispatch(setTableData(updatedData));
     } catch (error) {
       console.error(error);
-      alert('Something went wrong while uploading file. Please try again!');
+      toast.error(
+        'Something went wrong while uploading the file. Please try again.',
+      );
     }
   }
 
   return (
-    <div className={classes.container}>
-      <form className={classes.form}>
-        <div {...getRootProps()} className={classes.dropzone}>
-          <input {...getInputProps()} />
-          {isDragActive ? (
-            <p className={classes.fileInput}>Drop the file here...</p>
-          ) : (
-            <p className={classes.fileInput}>
-              Drag 'n' drop a file here, or click to select one
-            </p>
-          )}
-          {file && (
-            <p className={classes.selectedFileText}>
-              Selected file: {file.name}
-            </p>
-          )}
-        </div>
-        <Button
-          onClick={handleFileUpload}
-          variant="contained"
-          className={classes.button}
-        >
-          Upload
-        </Button>
-      </form>
-    </div>
+    <>
+      <div className={classes.container}>
+        <form className={classes.form}>
+          <div {...getRootProps()} className={classes.dropzone}>
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <p className={classes.fileInput}>Drop the file here...</p>
+            ) : (
+              <p className={classes.fileInput}>
+                Drag & drop a file here, or click to select one
+              </p>
+            )}
+            {file && (
+              <p className={classes.selectedFileText}>
+                Selected file: {file.name}
+              </p>
+            )}
+          </div>
+          <Button
+            onClick={handleFileUpload}
+            variant="contained"
+            className={classes.button}
+          >
+            Upload
+          </Button>
+        </form>
+      </div>
+      <ToastContainer />
+    </>
   );
 }
 

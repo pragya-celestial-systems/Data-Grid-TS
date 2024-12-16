@@ -21,7 +21,7 @@ function App() {
     <TableDataProvider>
       <PaginationProvider>
         <RowProvider>
-          {/* {hasData ? (
+          {hasData ? (
             <>
               <h1 style={{ textAlign: 'center', margin: '2rem' }}>
                 Typescript Data Grid
@@ -31,12 +31,12 @@ function App() {
             </>
           ) : (
             <UploadFileForm />
-          )} */}
-          <h1 style={{ textAlign: 'center', margin: '2rem' }}>
+          )}
+          {/* <h1 style={{ textAlign: 'center', margin: '2rem' }}>
             Typescript Data Grid
           </h1>
           <BasicTable />
-          <Pagination />
+          <Pagination /> */}
         </RowProvider>
       </PaginationProvider>
     </TableDataProvider>
