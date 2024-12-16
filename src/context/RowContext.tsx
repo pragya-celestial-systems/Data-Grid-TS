@@ -6,7 +6,8 @@ interface TableContextProviderProps {
 
 interface TableContextProps {
   rowsToBeDeleted: (string | number)[];
-  setRowsToBeDeleted: (rows: (string | number)[]) => void;
+  // Question : 
+  setRowsToBeDeleted: React.Dispatch<React.SetStateAction<(string | number)[]>>;
   areAllSelected: boolean;
   setAreAllSelected: (isSelected: boolean) => void;
 }

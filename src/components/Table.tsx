@@ -10,9 +10,8 @@ import TableHead from '@mui/material/TableHead';
 import Paper from '@mui/material/Paper';
 import DeleteButton from './DeleteButton';
 import { useRowContext } from '../context/RowContext';
-import { deleteRow, setTableData } from '../store/slices/table.slice';
+import { deleteRow } from '../store/slices/table.slice';
 import { useAppDispatch } from '../store/hooks';
-import jsonData from '../data.json';
 
 interface TableData {
   unique_key: string | number;
@@ -33,10 +32,6 @@ export default function BasicTable() {
     areAllSelected,
     setAreAllSelected,
   } = useRowContext();
-
-  useEffect(() => {
-    dispatch(setTableData(jsonData));
-  }, [dispatch]);
 
   useEffect(() => {
     if (areAllSelected) {

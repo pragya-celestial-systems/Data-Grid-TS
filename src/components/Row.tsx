@@ -37,11 +37,12 @@ function Row({ data }: RowProps) {
     }
   }, [data]);
 
-  function handleCheck(key: string | number) {
-    if (rowsToBeDeleted.includes(String(key))) {
-      setRowsToBeDeleted(rowsToBeDeleted.filter((item : string | number): boolean => item !== key));
-    } else {
-      setRowsToBeDeleted([...rowsToBeDeleted, String(key)]);
+  function handleCheck(key:string | number) {
+    if(rowsToBeDeleted.includes(key)){
+      const updatedRows = rowsToBeDeleted.filter(unique_key => unique_key !== key);
+      setRowsToBeDeleted(updatedRows);
+    }else{
+      setRowsToBeDeleted((prevState : (string | number)[]) => [...prevState, key]);
     }
   }
 

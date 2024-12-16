@@ -106,6 +106,7 @@ function UploadFileForm() {
         ...item,
         unique_key: uuidv4(),
       }));
+
       dispatch(setTableData(updatedData));
     } catch (error) {
       console.error(error);
