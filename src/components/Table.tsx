@@ -12,6 +12,7 @@ import DeleteButton from './DeleteButton';
 import { useRowContext } from '../context/RowContext';
 import { deleteRow } from '../store/slices/table.slice';
 import { useAppDispatch } from '../store/hooks';
+import FilterForm from './FIlterForm';
 
 interface TableData {
   unique_key: string | number;
@@ -65,6 +66,7 @@ export default function BasicTable() {
 
   return (
     <>
+      <FilterForm />
       {rowsToBeDeleted.length > 0 && (
         <DeleteButton onDelete={handleDeleteRow} />
       )}
