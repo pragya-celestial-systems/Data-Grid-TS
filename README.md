@@ -27,7 +27,7 @@ To run this project locally, follow these steps:
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/pragya-celestial-systems/Data-Grid.git
+   git clone https://github.com/pragya-celestial-systems/Data-Grid-TS.git
    ```
 
 2. **Navigate to the Project Directory:**
